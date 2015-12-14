@@ -10,7 +10,7 @@ namespace Localizy
     public class LocalizationProvider
     {
         private readonly ILocalizationDataProvider _localizationDataProvider = new NulloLocalizationDataProvider();
-        private Cache<string, Cache<CultureInfo, List<LocalString>>> _localizationStorageCache = new Cache<string, Cache<CultureInfo, List<LocalString>>>();
+        private IDictionary<string, Cache<CultureInfo, IDictionary<LocalizationKey, string>>> _localizationStorageCache = new Dictionary<string, Cache<CultureInfo, IDictionary<LocalizationKey, string>>>();
         private readonly Func<CultureInfo, ILocaleCache> _localeCacheFactory;
         private readonly ILocalizationStorageProvider[] _localizationStorageProviders;
 
@@ -30,18 +30,15 @@ namespace Localizy
                 ?? new LocalizationDataProvider(_localeCacheFactory, missingHandler ?? new DefaultValueLocalizationMissingHandler());
         }
 
-        private Cache<string, Cache<CultureInfo, List<LocalString>>> SetUpLocalizationStoreCache(ILocalizationStorageProvider[] localizationStorageProviders)
+        private IDictionary<string, Cache<CultureInfo, IDictionary<LocalizationKey, string>>> SetUpLocalizationStoreCache(ILocalizationStorageProvider[] localizationStorageProviders)
         {
             if (localizationStorageProviders.GroupBy(x => x.Name).Count() != localizationStorageProviders.Length)
                 throw new Exception("LocalizationStorageProviders must have unique names");
 
-            var cache = new Cache<string, Cache<CultureInfo, List<LocalString>>>(x =>
+            return localizationStorageProviders.ToDictionary(x => x.Name, x =>
             {
-                var list = localizationStorageProviders.SingleOrDefault(z => z.Name == x);
-                return new Cache<CultureInfo, List<LocalString>>(y => list != null ? list.Provide(y).ToList() : new List<LocalString>());
+                return new Cache<CultureInfo, IDictionary<LocalizationKey, string>>(y => x.Provide(y).ToDictionary(z => new LocalizationKey(z.Key), z => z.Display));
             });
-
-            return cache;
         }
 
         private IDictionary<LocalizationKey, string> OverlayStoredLocations(CultureInfo cultureInfo, ILocalizationStorageProvider[] localizationStorageProviders)
@@ -50,9 +47,9 @@ namespace Localizy
             foreach (var localizationStorageProvider in localizationStorageProviders)
             {
                 var provider = _localizationStorageCache[localizationStorageProvider.Name];
-                foreach (var localString in provider[cultureInfo])
+                foreach (var cultureValues in provider[cultureInfo])
                 {
-                    dict[new LocalizationKey(localString.Key)] = localString.Display;
+                    dict[cultureValues.Key] = cultureValues.Value;
                 }
             }
             return dict;
@@ -83,7 +80,7 @@ namespace Localizy
         {
             foreach (var cache in _localizationStorageCache)
             {
-                cache.Remove(cultureInfo);
+                cache.Value.Remove(cultureInfo);
             }
 
             _localizationDataProvider.Reload(cultureInfo, _localeCacheFactory);
@@ -91,7 +88,7 @@ namespace Localizy
 
         public IDictionary<LocalizationKey, string> GetStoredLocalizations(string name, CultureInfo cultureInfo)
         {
-            return _localizationStorageCache[name][cultureInfo].ToDictionary(x => new LocalizationKey(x.Key), x => x.Display);
+            return _localizationStorageCache[name][cultureInfo];
         }
 
         public IEnumerable<StringToken> GetAllTokens(CultureInfo culture, Assembly assembly, Func<Type, bool> where)

@@ -22,9 +22,19 @@ namespace Localizy
             return _localizationProvider;
         }
 
-        public static IDictionary<LocalizationKey, string> GetStoredLocalizations(string name, CultureInfo cultureInfo)
+        public static string GetText(StringToken token, CultureInfo culture = null)
         {
-            return _localizationProvider.GetStoredLocalizations(name, cultureInfo);
+            return _localizationProvider.GetText(token, culture);
+        }
+
+        public static string GetText(string key, CultureInfo culture = null)
+        {
+            return GetText(StringToken.FromKeyString(key), culture);
+        }
+
+        public static void UpdateText(LocalizationKey key, CultureInfo culture, string value)
+        {
+            _localizationProvider.UpdateText(key, culture, value);
         }
 
         public static void Reload(CultureInfo culture)
@@ -37,19 +47,14 @@ namespace Localizy
             _localizationProvider.Reload();
         }
 
-        public static string GetText(StringToken token, CultureInfo culture = null)
-        {
-            return _localizationProvider.GetText(token, culture);
-        }
-
-        public static string GetText(string key, CultureInfo culture = null)
-        {
-            return GetText(StringToken.FromKeyString(key), culture);
-        }
-
         public static IEnumerable<StringToken> GetAllTokens(CultureInfo culture, Assembly assembly, Func<Type, bool> where)
         {
             return _localizationProvider.GetAllTokens(culture, assembly, where);
+        }
+
+        public static IDictionary<LocalizationKey, string> GetStoredLocalizations(string name, CultureInfo cultureInfo)
+        {
+            return _localizationProvider.GetStoredLocalizations(name, cultureInfo);
         }
 
         internal static CultureInfo GetCulture(CultureInfo culture)
