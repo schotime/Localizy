@@ -3,7 +3,7 @@ using System.Xml;
 
 namespace Localizy
 {
-    public static class XmlExtensions
+    internal static class XmlExtensions
     {
         public static XmlDocument XmlFromFileWithRoot(this string fileName, string root)
         {

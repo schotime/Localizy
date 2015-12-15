@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Localizy
 {
-    public static class ListExtensions
+    internal static class ListExtensions
     {
         public static void Each<T>(this IEnumerable<T> values, Action<T> eachAction)
         {

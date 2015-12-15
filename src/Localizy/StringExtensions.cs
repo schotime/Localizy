@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Localizy
 {
-    public static class StringExtensions
+    internal static class StringExtensions
     {
         public static bool IsNotEmpty(this string stringValue)
         {

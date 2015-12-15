@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Localizy
 {
-    public static class TypeExtensions
+    internal static class TypeExtensions
     {
         public static Type GetTypeInfo(this Type type)
         {

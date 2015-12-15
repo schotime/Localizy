@@ -39,11 +39,10 @@ namespace Localizy
         {
             var text = _localeCache[culture].Get(token.ToLocalizationKey(), () =>
             {
-                if (culture == culture.Parent)
+                if (culture.Parent == CultureInfo.InvariantCulture || culture == culture.Parent)
                 {
                     return _missingHandler.FindMissingText(token, culture);
                 }
-
                 return FindTextViaHierarchy(token, culture.Parent);
             });
             

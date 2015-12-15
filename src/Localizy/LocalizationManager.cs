@@ -7,16 +7,14 @@ namespace Localizy
 {
     public static class LocalizationManager
     {
-        private static LocalizationProvider _localizationProvider;
+        private static ILocalizationProvider _localizationProvider = Init();
 
-        public static CultureInfo DefaultCultureInfo { get; set; }
-
-        public static LocalizationProvider Init(params ILocalizationStorageProvider[] localizationStorageProviders)
+        public static ILocalizationProvider Init(params ILocalizationStorageProvider[] localizationStorageProviders)
         {
             return Init(null, null, localizationStorageProviders);
         }
 
-        public static LocalizationProvider Init(ILocalizationDataProvider localizationDataProvider, ILocalizationMissingHandler missingHandler, params ILocalizationStorageProvider[] localizationStorageProviders)
+        public static ILocalizationProvider Init(ILocalizationDataProvider localizationDataProvider, ILocalizationMissingHandler missingHandler, params ILocalizationStorageProvider[] localizationStorageProviders)
         {
             _localizationProvider = new LocalizationProvider(localizationDataProvider, missingHandler, localizationStorageProviders);
             return _localizationProvider;
