@@ -8,7 +8,7 @@ namespace Localizy
 {
     public class NulloLocalizationDataProvider : ILocalizationDataProvider
     {
-        public string GetText(StringToken key, CultureInfo culture = null)
+        public string GetText(StringToken key, CultureInfo culture = null, Func<string> missingFunc = null)
         {
 #if DOTNET54
             culture = culture ?? CultureInfo.CurrentUICulture;

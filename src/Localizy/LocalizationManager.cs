@@ -20,14 +20,14 @@ namespace Localizy
             return _localizationProvider;
         }
 
-        public static string GetText(StringToken token, CultureInfo culture = null)
+        public static string GetText(StringToken token, CultureInfo culture = null, object model = null)
         {
-            return _localizationProvider.GetText(token, culture);
+            return _localizationProvider.GetText(token, culture, model);
         }
 
-        public static string GetText(string key, CultureInfo culture = null)
+        public static string TryGetText(LocalizationKey key, CultureInfo culture = null, object model = null)
         {
-            return GetText(StringToken.FromKeyString(key), culture);
+            return _localizationProvider.TryGetText(key, culture, model);
         }
 
         public static void UpdateText(LocalizationKey key, CultureInfo culture, string value)

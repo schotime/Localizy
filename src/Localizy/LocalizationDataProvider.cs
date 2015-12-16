@@ -30,20 +30,20 @@ namespace Localizy
             return type.GetFields(BindingFlags.Static | BindingFlags.Public).Where(field => field.FieldType.CanBeCastTo<StringToken>()).Select(field => field.GetValue(null).As<StringToken>());
         }
 
-        public string GetText(StringToken token, CultureInfo culture)
+        public string GetText(StringToken token, CultureInfo culture, Func<string> missingFunc = null)
         {
-            return FindTextViaHierarchy(token, culture);
+            return FindTextViaHierarchy(token, culture, missingFunc);
         }
 
-        private string FindTextViaHierarchy(StringToken token, CultureInfo culture)
+        private string FindTextViaHierarchy(StringToken token, CultureInfo culture, Func<string> missingFunc)
         {
             var text = _localeCache[culture].Get(token.ToLocalizationKey(), () =>
             {
                 if (culture.Parent == CultureInfo.InvariantCulture || culture == culture.Parent)
                 {
-                    return _missingHandler.FindMissingText(token, culture);
+                    return missingFunc != null ? missingFunc() : _missingHandler.FindMissingText(token, culture);
                 }
-                return FindTextViaHierarchy(token, culture.Parent);
+                return FindTextViaHierarchy(token, culture.Parent, missingFunc);
             });
             
             return text;

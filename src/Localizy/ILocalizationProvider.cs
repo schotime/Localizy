@@ -11,8 +11,14 @@ namespace Localizy
         IDictionary<LocalizationKey, string> GetStoredLocalizations(string name, CultureInfo cultureInfo);
         void Reload(CultureInfo cultureInfo);
         void Reload();
-        string GetText(StringToken token, CultureInfo culture = null);
-        string GetText(string key, CultureInfo culture = null);
+        string GetText(StringToken token);
+        string GetText(StringToken token, CultureInfo culture);
+        string GetText(StringToken token, object model);
+        string GetText(StringToken token, CultureInfo culture, object model);
+        string TryGetText(LocalizationKey key);
+        string TryGetText(LocalizationKey key, CultureInfo culture);
+        string TryGetText(LocalizationKey key, object model);
+        string TryGetText(LocalizationKey key, CultureInfo culture, object model);
         void UpdateText(LocalizationKey localizationKey, CultureInfo culture, string value);
         CultureInfo GetCulture(CultureInfo culture);
     }

@@ -40,11 +40,11 @@ namespace Localizy.Tests
         [Fact]
         public void UpdateTextForASpecificKeyAndCulture_ShouldUpdateTheTranslationForTheCultureSpecified()
         {
-            var text1en = _provider.GetText("TestTranslations.General:Test1", new CultureInfo("en"));
+            var text1en = _provider.TryGetText("TestTranslations.General:Test1", new CultureInfo("en"));
 
             _provider.UpdateText(new LocalizationKey("TestTranslations.General:Test1"), new CultureInfo("en"), "Test1en-updated");
 
-            var text2en = _provider.GetText("TestTranslations.General:Test1", new CultureInfo("en"));
+            var text2en = _provider.TryGetText("TestTranslations.General:Test1", new CultureInfo("en"));
             Assert.Equal("Test1en", text1en);
             Assert.Equal("Test1en-updated", text2en);
         }

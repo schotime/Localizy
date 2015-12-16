@@ -41,8 +41,8 @@ namespace Localizy.Tests
         public void ReloadingAllCultures_ShouldReloadTheCacheForAllCultures()
         {
             //Prime cache
-            _provider.GetText("TestTranslations.General:Test1", new CultureInfo("en"));
-            _provider.GetText("TestTranslations.General:Test1", new CultureInfo("fr"));
+            _provider.TryGetText("TestTranslations.General:Test1", new CultureInfo("en"));
+            _provider.TryGetText("TestTranslations.General:Test1", new CultureInfo("fr"));
 
             //Replace source
             _data[new CultureInfo("en")] = new List<LocalString>()
@@ -58,8 +58,8 @@ namespace Localizy.Tests
             //Reload en cache
             _provider.Reload();
 
-            var text2en = _provider.GetText("TestTranslations.General:Test1", new CultureInfo("en"));
-            var text2fr = _provider.GetText("TestTranslations.General:Test1", new CultureInfo("fr"));
+            var text2en = _provider.TryGetText("TestTranslations.General:Test1", new CultureInfo("en"));
+            var text2fr = _provider.TryGetText("TestTranslations.General:Test1", new CultureInfo("fr"));
             Assert.Equal("Test1en-reload", text2en);
             Assert.Equal("Test1fr-reload", text2fr);
         }

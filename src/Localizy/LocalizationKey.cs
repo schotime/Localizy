@@ -65,6 +65,11 @@ namespace Localizy
                 : _namespace + ":" + _key;
         }
 
+        public static implicit operator LocalizationKey(string key)
+        {
+            return new LocalizationKey(key);
+        }
+
         private static LocalizationKey NormalizeKey(string key)
         {
             var keyParts = key.Split(':', '.');

@@ -54,14 +54,54 @@ namespace Localizy
             return dict;
         }
 
-        public string GetText(StringToken token, CultureInfo culture = null)
+        public string TryGetText(LocalizationKey key)
         {
-            return _localizationDataProvider.GetText(token, GetCulture(culture));
+            return TryGetText(key, null);
         }
 
-        public string GetText(string key, CultureInfo culture = null)
+        public string TryGetText(LocalizationKey key, CultureInfo culture)
         {
-            return GetText(StringToken.FromKeyString(key), GetCulture(culture));
+            return TryGetText(key, culture, null);
+        }
+
+        public string TryGetText(LocalizationKey key, object model)
+        {
+            return TryGetText(key, null, model);
+        }
+
+        public string TryGetText(LocalizationKey key, CultureInfo culture, object model)
+        {
+            var result = _localizationDataProvider.GetText(StringToken.FromKeyString(key.ToString()), GetCulture(culture), () => null);
+            if (result != null && model != null)
+            {
+                result = ObjectFormatter.TokenFormat(result, model);
+            }
+            return result;
+        }
+
+        public string GetText(StringToken token)
+        {
+            return GetText(token, null);
+        }
+
+        public string GetText(StringToken token, CultureInfo culture)
+        {
+            return GetText(token, culture, null);
+        }
+
+        public string GetText(StringToken token, object model)
+        {
+            return GetText(token, null, model);
+        }
+
+        public string GetText(StringToken token, CultureInfo culture, object model)
+        {
+            var result = _localizationDataProvider.GetText(token, GetCulture(culture));
+            if (result != null && model != null)
+            {
+                result = ObjectFormatter.TokenFormat(result, model);
+            }
+            return result;
         }
 
         public void UpdateText(LocalizationKey localizationKey, CultureInfo culture, string value)

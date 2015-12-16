@@ -7,7 +7,7 @@ namespace Localizy
 {
     public interface ILocalizationDataProvider
     {
-        string GetText(StringToken key, CultureInfo culture);
+        string GetText(StringToken key, CultureInfo culture, Func<string> missingFunc = null);
         void UpdateText(LocalizationKey key, CultureInfo culture, string value);
         void Reload(CultureInfo culture, Func<CultureInfo, ILocaleCache> factory);
         void Reload();

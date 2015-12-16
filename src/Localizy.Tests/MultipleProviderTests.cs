@@ -56,9 +56,9 @@ namespace Localizy.Tests
         [Fact]
         public void GetTextUsingSpecificCulture_ShouldOverlayTheProvidersInTheOrderSpecifiedIfTranslationExists()
         {
-            var stringToken1 = "TestTranslations.General:Test1";
-            var result1 = _provider.GetText(stringToken1, new CultureInfo("fr"));
-            var result2 = _provider.GetText(stringToken1, new CultureInfo("en"));
+            var key = "TestTranslations.General:Test1";
+            var result1 = _provider.TryGetText(key, new CultureInfo("fr"));
+            var result2 = _provider.TryGetText(key, new CultureInfo("en"));
 
             Assert.Equal("Test1fr2", result1);
             Assert.Equal("Test1en", result2);
