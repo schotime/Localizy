@@ -10,11 +10,13 @@ namespace Localizy.Storage
     public class XmlDirectoryStorageProvider : ILocalizationStorageProvider
     {
         private DirectoryInfo _directoryInfo;
-        private const string RootElement = "localizations";
-        private const string Key = "key";
-        private const string LeafElement = "string";
-        
-        public XmlDirectoryStorageProvider(string name, string directory, string fileSuffixPattern = "*.locale.config")
+        public const string RootElement = "localizations";
+        public const string Key = "key";
+        public const string LeafElement = "string";
+        public const string DefaultSuffix = ".locale.config";
+        public const string Hash = "hash";
+
+        public XmlDirectoryStorageProvider(string name, string directory, string fileSuffixPattern = "*" + DefaultSuffix)
         {
             Name = name;
             FileSuffixPattern = fileSuffixPattern;
