@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -115,7 +116,12 @@ namespace Localizy
         /// <returns></returns>
         public string ToString(bool condition)
         {
-            return condition ? LocalizationManager.GetText(this) : string.Empty;
+            return condition ? ToString(null) : string.Empty;
+        }
+
+        public string ToString(CultureInfo culture)
+        {
+            return LocalizationManager.GetText(this, culture);
         }
 
         static StringToken()
