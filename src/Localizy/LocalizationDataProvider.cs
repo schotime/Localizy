@@ -19,17 +19,6 @@ namespace Localizy
             _missingHandler = missingHandler;
         }
         
-        public IEnumerable<StringToken> GetAllTokens(CultureInfo culture, Assembly assembly, Func<Type, bool> where)
-        {
-            var stringTokens = assembly.GetExportedTypes().Where(where).SelectMany(x => x.RecurseNestedTypes()).SelectMany(ScanStringTokenType);
-            return stringTokens;
-        }
-
-        private IEnumerable<StringToken> ScanStringTokenType(Type type)
-        {
-            return type.GetFields(BindingFlags.Static | BindingFlags.Public).Where(field => field.FieldType.CanBeCastTo<StringToken>()).Select(field => field.GetValue(null).As<StringToken>());
-        }
-
         public string GetText(StringToken token, CultureInfo culture, Func<string> missingFunc = null)
         {
             return FindTextViaHierarchy(token, culture, missingFunc);

@@ -8,10 +8,12 @@ namespace Localizy
 {
     internal static class TypeExtensions
     {
+#if !DOTNET54
         public static Type GetTypeInfo(this Type type)
         {
             return type;
         }
+#endif
 
         public static IEnumerable<Type> RecurseNestedTypes(this Type type)
         {
@@ -22,7 +24,7 @@ namespace Localizy
             do
             {
                 var currentType = stack.Pop();
-                var nestedTypes = currentType.GetTypeInfo().GetNestedTypes(BindingFlags.Public);
+                var nestedTypes = currentType.GetNestedTypes(BindingFlags.Public);
 
                 foreach (var nestedType in nestedTypes)
                 {
@@ -61,7 +63,7 @@ namespace Localizy
             if (type == null) return false;
             if (type == destinationType) return true;
 
-            return destinationType.GetTypeInfo().IsAssignableFrom(type);
+            return destinationType.IsAssignableFrom(type);
         }
     }
 }

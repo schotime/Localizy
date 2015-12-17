@@ -7,7 +7,7 @@ namespace Localizy
 {
     public interface ILocalizationProvider
     {
-        IEnumerable<StringToken> GetAllTokens(CultureInfo culture, Assembly assembly, Func<Type, bool> where);
+        IDictionary<LocalizationKey, StringToken> GetAllTokens();
         IDictionary<LocalizationKey, string> GetStoredLocalizations(string name, CultureInfo cultureInfo);
         void Reload(CultureInfo cultureInfo);
         void Reload();
@@ -21,5 +21,6 @@ namespace Localizy
         string TryGetText(LocalizationKey key, CultureInfo culture, object model);
         void UpdateText(LocalizationKey localizationKey, CultureInfo culture, string value);
         CultureInfo GetCulture(CultureInfo culture);
+        LocalizationProvider WithFilter(Func<Type, bool> filter);
     }
 }

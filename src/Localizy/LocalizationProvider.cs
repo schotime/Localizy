@@ -12,31 +12,48 @@ namespace Localizy
         private IDictionary<string, Cache<CultureInfo, IDictionary<LocalizationKey, string>>> _localizationStorageCache = new Dictionary<string, Cache<CultureInfo, IDictionary<LocalizationKey, string>>>();
         private readonly Func<CultureInfo, ILocaleCache> _localeCacheFactory;
         private readonly ILocalizationStorageProvider[] _localizationStorageProviders;
+        private readonly Lazy<IDictionary<LocalizationKey, StringToken>> _keyToTokens = new Lazy<IDictionary<LocalizationKey, StringToken>>();
+        private Func<Type, bool> _filter = x => true;
 
         public Func<CultureInfo> CurrentCultureFactory { get; set; }
 
-        public LocalizationProvider(params ILocalizationStorageProvider[] localizationStorageProviders) : this(null, null, localizationStorageProviders)
+        public LocalizationProvider(Assembly assembly, params ILocalizationStorageProvider[] localizationStorageProviders) : this(new[] { assembly }, localizationStorageProviders)
         {
         }
 
-        public LocalizationProvider(ILocalizationDataProvider localizationDataProvider, ILocalizationMissingHandler missingHandler, params ILocalizationStorageProvider[] localizationStorageProviders)
+        public LocalizationProvider(Assembly[] assemblies, params ILocalizationStorageProvider[] localizationStorageProviders) : this(assemblies, null, null, localizationStorageProviders)
+        {
+        }
+
+        public LocalizationProvider(Assembly[] assemblies, ILocalizationDataProvider localizationDataProvider, ILocalizationMissingHandler missingHandler, params ILocalizationStorageProvider[] localizationStorageProviders)
         {
             _localizationStorageProviders = localizationStorageProviders;
             _localizationStorageCache = SetUpLocalizationStoreCache(localizationStorageProviders);
             _localeCacheFactory = x => new ThreadSafeLocaleCache(x, OverlayStoredLocations(x, localizationStorageProviders));
             _localizationDataProvider = localizationDataProvider ?? new LocalizationDataProvider(_localeCacheFactory, missingHandler ?? new DefaultValueLocalizationMissingHandler());
+            _keyToTokens = new Lazy<IDictionary<LocalizationKey, StringToken>>(() => TokenScanner.GetAllTokens(assemblies, _filter).ToDictionary(x => x.ToLocalizationKey(), x => x));
+        }
+
+        public static LocalizationProvider Create<T>(params ILocalizationStorageProvider[] localizationStorageProviders)
+        {
+            return new LocalizationProvider(typeof(T).GetTypeInfo().Assembly, localizationStorageProviders);
+        }
+
+        public LocalizationProvider WithFilter(Func<Type, bool> filter)
+        {
+            _filter = filter;
+            return this;
         }
 
         private IDictionary<string, Cache<CultureInfo, IDictionary<LocalizationKey, string>>> SetUpLocalizationStoreCache(ILocalizationStorageProvider[] localizationStorageProviders)
         {
             if (localizationStorageProviders.GroupBy(x => x.Name).Count() != localizationStorageProviders.Length)
                 throw new Exception("LocalizationStorageProviders must have unique names");
+
             return localizationStorageProviders.ToDictionary(x => x.Name, x =>
             {
                 return new Cache<CultureInfo, IDictionary<LocalizationKey, string>>(y => x.Provide(y).ToDictionary(z => new LocalizationKey(z.Key), z => z.Display));
-            }
-
-            );
+            });
         }
 
         private IDictionary<LocalizationKey, string> OverlayStoredLocations(CultureInfo cultureInfo, ILocalizationStorageProvider[] localizationStorageProviders)
@@ -71,12 +88,13 @@ namespace Localizy
 
         public string TryGetText(LocalizationKey key, CultureInfo culture, object model)
         {
-            var result = _localizationDataProvider.GetText(StringToken.FromKeyString(key.ToString()), GetCulture(culture), () => null);
-            if (result != null && model != null)
-            {
-                result = ObjectFormatter.TokenFormat(result, model);
+            StringToken token;
+            var isFound = _keyToTokens.Value.TryGetValue(key, out token);
+            if (!isFound) { 
+                return null;
             }
-            return result;
+                
+            return GetText(token, culture, model);
         }
 
         public string GetText(StringToken token)
@@ -130,11 +148,6 @@ namespace Localizy
             return _localizationStorageCache[name][cultureInfo];
         }
 
-        public IEnumerable<StringToken> GetAllTokens(CultureInfo culture, Assembly assembly, Func<Type, bool> where)
-        {
-            return _localizationDataProvider.GetAllTokens(culture, assembly, where);
-        }
-
         public CultureInfo GetCulture(CultureInfo culture)
         {
             return culture ?? (CurrentCultureFactory != null ? CurrentCultureFactory() : null) ??
@@ -143,6 +156,11 @@ namespace Localizy
 #else
             System.Threading.Thread.CurrentThread.CurrentUICulture;
 #endif
+        }
+
+        public IDictionary<LocalizationKey, StringToken> GetAllTokens()
+        {
+            return _keyToTokens.Value;
         }
     }
 }

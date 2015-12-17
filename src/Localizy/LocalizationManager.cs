@@ -7,16 +7,26 @@ namespace Localizy
 {
     public static class LocalizationManager
     {
-        private static ILocalizationProvider _localizationProvider = Init();
+        private static ILocalizationProvider _localizationProvider = Init((Assembly)null);
 
-        public static ILocalizationProvider Init(params ILocalizationStorageProvider[] localizationStorageProviders)
+        public static ILocalizationProvider Init(Assembly assembly, params ILocalizationStorageProvider[] localizationStorageProviders)
         {
-            return Init(null, null, localizationStorageProviders);
+            return Init(new[] { assembly }, localizationStorageProviders);
         }
 
-        public static ILocalizationProvider Init(ILocalizationDataProvider localizationDataProvider, ILocalizationMissingHandler missingHandler, params ILocalizationStorageProvider[] localizationStorageProviders)
+        public static ILocalizationProvider Init<T>(params ILocalizationStorageProvider[] localizationStorageProviders)
         {
-            _localizationProvider = new LocalizationProvider(localizationDataProvider, missingHandler, localizationStorageProviders);
+            return Init(new[] { typeof(T).GetTypeInfo().Assembly }, localizationStorageProviders);
+        }
+
+        public static ILocalizationProvider Init(Assembly[] assemblies, params ILocalizationStorageProvider[] localizationStorageProviders)
+        {
+            return Init(assemblies, null, null, localizationStorageProviders);
+        }
+
+        public static ILocalizationProvider Init(Assembly[] assemblies, ILocalizationDataProvider localizationDataProvider, ILocalizationMissingHandler missingHandler, params ILocalizationStorageProvider[] localizationStorageProviders)
+        {
+            _localizationProvider = new LocalizationProvider(assemblies, localizationDataProvider, missingHandler, localizationStorageProviders);
             return _localizationProvider;
         }
 
@@ -45,19 +55,14 @@ namespace Localizy
             _localizationProvider.Reload();
         }
 
-        public static IEnumerable<StringToken> GetAllTokens(CultureInfo culture, Assembly assembly, Func<Type, bool> where)
+        public static IDictionary<LocalizationKey, StringToken> GetAllTokens()
         {
-            return _localizationProvider.GetAllTokens(culture, assembly, where);
+            return _localizationProvider.GetAllTokens();
         }
 
         public static IDictionary<LocalizationKey, string> GetStoredLocalizations(string name, CultureInfo cultureInfo)
         {
             return _localizationProvider.GetStoredLocalizations(name, cultureInfo);
-        }
-
-        internal static CultureInfo GetCulture(CultureInfo culture)
-        {
-            return _localizationProvider.GetCulture(culture);
         }
     }
 }

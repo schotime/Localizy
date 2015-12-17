@@ -14,6 +14,7 @@ namespace Localizy
         private readonly Lazy<LocalizationKey> _localizationKey;
 
         private static readonly IList<Type> _latchedTypes = new List<Type>();
+        private Type _type;
 
         protected static void fillKeysOnFields(Type tokenType)
         {
@@ -42,7 +43,8 @@ namespace Localizy
         {
             _key = key;
             _defaultValue = defaultValue;
-            _localizationKey = new Lazy<LocalizationKey>(() => BuildKey(GetContainerType(), localizationNamespace, namespaceByType));
+            _type = GetContainerType();
+            _localizationKey = new Lazy<LocalizationKey>(() => BuildKey(_type, localizationNamespace, namespaceByType));
         }
 
         protected virtual Type GetContainerType()
@@ -72,6 +74,11 @@ namespace Localizy
             {
                 throw new Exception("Key is not set. This usually means the Type provided to the StringToken<T> class is not the parent class");
             }
+        }
+
+        public Type ContainedType
+        {
+            get { return _type; }
         }
 
         public virtual string FullKey
@@ -126,7 +133,7 @@ namespace Localizy
 
         static StringToken()
         {
-            LocalizationManager = new LocalizationManagerAdapter();
+            LocalizationManager = new LocalizationManagerStaticAdapter();
         }
 
         public static ILocalizationManager LocalizationManager { get; set; }

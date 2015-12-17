@@ -20,17 +20,17 @@ namespace Localizy.Storage
             _localizationProvider = localizationProvider;
         }
 
-        public void GenerateFile(string directory, Assembly assembly, Func<Type, bool> filter, CultureInfo culture, bool generateHash = false, bool useDefault = true)
+        public void GenerateFile(string directory, CultureInfo culture, bool generateHash = false, bool useDefault = true)
         {
-            var result = Generate(assembly, filter, culture, generateHash: generateHash, useDefault: useDefault);
+            var result = Generate(culture, generateHash: generateHash, useDefault: useDefault);
             var file = Path.Combine(directory, culture.Name + XmlDirectoryStorageProvider.DefaultSuffix);
             File.WriteAllText(file, result);
         }
 
-        public string Generate(Assembly assembly, Func<Type, bool> filter, CultureInfo culture, bool generateHash = false, bool useDefault = true)
+        public string Generate(CultureInfo culture, bool generateHash = false, bool useDefault = true)
         {
-            var tokens = _localizationProvider.GetAllTokens(culture, assembly, filter);
-            var result = GenerateXml(tokens.Select(x => new LocalString(x.ToLocalizationKey().ToString(), useDefault ? x.DefaultValue : _localizationProvider.GetText(x, culture))), generateHash);
+            var tokens = _localizationProvider.GetAllTokens();
+            var result = GenerateXml(tokens.Select(x => new LocalString(x.Key.ToString(), useDefault ? x.Value.DefaultValue : _localizationProvider.GetText(x.Value, culture))), generateHash);
             return result;
         }
 

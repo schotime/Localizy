@@ -7,7 +7,7 @@ namespace Localizy.Tests
     {
         public StringTokenStronglyTypedTester()
         {
-            LocalizationManager.Init();
+            LocalizationManager.Init(typeof(TestTranslations).Assembly);
         }
 
         [Fact]

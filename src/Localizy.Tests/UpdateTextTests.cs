@@ -31,7 +31,7 @@ namespace Localizy.Tests
 
             _storageProvider = new InMemoryLocalizationStorageProvider("1", _data);
 
-            _provider = new LocalizationProvider(_storageProvider)
+            _provider = new LocalizationProvider(typeof(TestTranslations).Assembly, _storageProvider)
             {
                 CurrentCultureFactory = () => new CultureInfo("en")
             };

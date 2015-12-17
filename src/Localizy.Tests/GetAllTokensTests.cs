@@ -32,20 +32,17 @@ namespace Localizy.Tests
 
             _localizationStorageProvider = new InMemoryLocalizationStorageProvider("1", _data);
 
-            _provider = new LocalizationProvider(_localizationStorageProvider)
-            {
-                CurrentCultureFactory = () => new CultureInfo("en")
-            };
+            _provider = new LocalizationProvider(typeof(TestTranslations).Assembly, _localizationStorageProvider).WithFilter(x => x == typeof(TestTranslations));
         }
 
         [Fact]
         public void GetAllTokens_ShouldReturnAllStringTokensForTheGivenAssemblyFilteredByAWhereClause()
         {
-            var text1en = _provider.GetAllTokens(new CultureInfo("en"), typeof(TestTranslations).Assembly, x => x == typeof(TestTranslations)).ToList();
+            var text1en = _provider.GetAllTokens();
             Assert.Equal(3, text1en.Count());
-            Assert.Equal("TestTop", _provider.GetText(text1en[0]));
-            Assert.Equal("Test1en", _provider.GetText(text1en[1]));
-            Assert.Equal("Test1Missing", _provider.GetText(text1en[2]));
+            Assert.Equal("TestTop", _provider.GetText(text1en["TestTranslations.TestTop"], new CultureInfo("en")));
+            Assert.Equal("Test1en", _provider.GetText(text1en["TestTranslations.General:Test1"], new CultureInfo("en")));
+            Assert.Equal("Test1Missing", _provider.GetText(text1en["TestTranslations.General:Test1Missing"], new CultureInfo("en")));
         }
     }
 }

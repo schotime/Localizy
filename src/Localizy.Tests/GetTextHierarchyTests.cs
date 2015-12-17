@@ -27,7 +27,7 @@ namespace Localizy.Tests
                 }
             });
 
-            _provider = new LocalizationProvider(storageProvider);
+            _provider = new LocalizationProvider(typeof(TestTranslations).Assembly, storageProvider);
         }
 
         [Fact]

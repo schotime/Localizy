@@ -27,7 +27,7 @@ namespace Localizy.Tests
                 }
             });
 
-            _provider = new LocalizationProvider(storageProvider)
+            _provider = new LocalizationProvider(typeof(TestTranslations).Assembly, storageProvider)
             {
                 CurrentCultureFactory = () => new CultureInfo("en")
             };
@@ -63,18 +63,18 @@ namespace Localizy.Tests
         [Fact]
         public void MultipleCallsToGetText_ShouldReturnTheSameResult()
         {
-            var text1 = _provider.GetText(TestTranslations.General.Test1);
-            var text2 = _provider.GetText(TestTranslations.General.Test1);
+            var stringToken1 = _provider.GetText(TestTranslations.General.Test1);
+            var stringToken2 = _provider.GetText(TestTranslations.General.Test1);
 
-            Assert.Equal(text1, text2);
+            Assert.Equal(stringToken1, stringToken2);
         }
 
         [Fact]
         public void GetTextUsingTheKeyAndSpecifyingTheCulture_ShouldTranslateTheSameKeyIntoBothCultures()
         {
-            var key = "TestTranslations.General:Test1";
-            var result1 = _provider.TryGetText(key, new CultureInfo("fr"));
-            var result2 = _provider.TryGetText(key, new CultureInfo("en"));
+            var stringToken1 = "TestTranslations.General:Test1";
+            var result1 = _provider.TryGetText(stringToken1, new CultureInfo("fr"));
+            var result2 = _provider.TryGetText(stringToken1, new CultureInfo("en"));
 
             Assert.Equal("Test1fr", result1);
             Assert.Equal("Test1en", result2);
@@ -83,15 +83,15 @@ namespace Localizy.Tests
         [Fact]
         public void GetTextUsingTheKeyAndSpecifyingNoCulture_ShouldTranslateUsingTheCurrentCultureFactory()
         {
-            var text = _provider.TryGetText("TestTranslations.General:Test1");
-            Assert.Equal("Test1en", text);
+            var stringToken1 = _provider.TryGetText("TestTranslations.General:Test1");
+            Assert.Equal("Test1en", stringToken1);
         }
 
         [Fact]
         public void GetTextUsingTheKeyWithDotAndSpecifyingNoCulture_ShouldTranslateUsingTheCurrentCultureFactory()
         {
-            var text = _provider.TryGetText("TestTranslations.General.Test1");
-            Assert.Equal("Test1en", text);
+            var stringToken1 = _provider.TryGetText("TestTranslations.General.Test1");
+            Assert.Equal("Test1en", stringToken1);
         }
     }
 }

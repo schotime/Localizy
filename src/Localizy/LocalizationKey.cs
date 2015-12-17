@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Localizy
 {
-    public class LocalizationKey
+    public class LocalizationKey : IComparable<LocalizationKey>
     {
         private readonly string _key;
         private readonly string _namespace;
@@ -79,6 +79,12 @@ namespace Localizy
             }
 
             return new LocalizationKey(keyParts[keyParts.Length - 1], string.Join(".", keyParts.Take(keyParts.Length - 1)));
+        }
+
+        public int CompareTo(LocalizationKey other)
+        {
+            if (other == null) return 1;
+            return ToString().CompareTo(other.ToString());
         }
 
         public string Key { get { return _key; } }

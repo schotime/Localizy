@@ -37,7 +37,7 @@ namespace Localizy.Tests
                 }
             });
 
-            _provider = new LocalizationProvider(storageProvider, storageProvider2)
+            _provider = new LocalizationProvider(typeof(TestTranslations).Assembly, storageProvider, storageProvider2)
             {
                 CurrentCultureFactory = () => new CultureInfo("en")
             };
@@ -56,9 +56,9 @@ namespace Localizy.Tests
         [Fact]
         public void GetTextUsingSpecificCulture_ShouldOverlayTheProvidersInTheOrderSpecifiedIfTranslationExists()
         {
-            var key = "TestTranslations.General:Test1";
-            var result1 = _provider.TryGetText(key, new CultureInfo("fr"));
-            var result2 = _provider.TryGetText(key, new CultureInfo("en"));
+            var stringToken1 = "TestTranslations.General:Test1";
+            var result1 = _provider.TryGetText(stringToken1, new CultureInfo("fr"));
+            var result2 = _provider.TryGetText(stringToken1, new CultureInfo("en"));
 
             Assert.Equal("Test1fr2", result1);
             Assert.Equal("Test1en", result2);
