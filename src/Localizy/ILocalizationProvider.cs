@@ -21,6 +21,5 @@ namespace Localizy
         string TryGetText(LocalizationKey key, CultureInfo culture, object model);
         void UpdateText(LocalizationKey localizationKey, CultureInfo culture, string value);
         CultureInfo GetCulture(CultureInfo culture);
-        LocalizationProvider WithFilter(Func<Type, bool> filter);
     }
 }
