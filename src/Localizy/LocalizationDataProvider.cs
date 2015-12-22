@@ -8,9 +8,9 @@ namespace Localizy
 {
     public class LocalizationDataProvider : ILocalizationDataProvider
     {
-        private Cache<CultureInfo, ILocaleCache> _localeCache;
+        private readonly Cache<CultureInfo, ILocaleCache> _localeCache;
         private readonly ILocalizationMissingHandler _missingHandler;
-        private Func<CultureInfo, ILocaleCache> _localeCacheFactory;
+        private readonly Func<CultureInfo, ILocaleCache> _localeCacheFactory;
 
         public LocalizationDataProvider(Func<CultureInfo, ILocaleCache> localeCacheFactory, ILocalizationMissingHandler missingHandler)
         {
@@ -45,7 +45,7 @@ namespace Localizy
 
         public void Reload()
         {
-            _localeCache = new Cache<CultureInfo, ILocaleCache>(_localeCacheFactory);
+            _localeCache.ClearAll();
         }
 
         public void Reload(CultureInfo cultureInfo, Func<CultureInfo, ILocaleCache> factory)

@@ -93,5 +93,12 @@ namespace Localizy.Tests
             var stringToken1 = _provider.TryGetText("TestTranslations.General.Test1");
             Assert.Equal("Test1en", stringToken1);
         }
+
+        [Fact]
+        public void GetTextUsingTheKeyThatDoesNotExist_ShouldReturnNull()
+        {
+            var stringToken1 = _provider.TryGetText("MyMissingTran");
+            Assert.Null(stringToken1);
+        }
     }
 }
