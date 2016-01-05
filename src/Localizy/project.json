@@ -1,10 +1,10 @@
 ﻿{
-    "version": "1.0.0-*",
-    "description": "Localizy",
-    "authors": [ "Adam Schroder" ],
-    "tags": [ "" ],
-    "projectUrl": "",
-    "licenseUrl": "",
+  "version": "1.0.0-*",
+  "description": "Localizy",
+  "authors": [ "Adam Schroder" ],
+  "tags": [ "localization translation internationalization", "l12n", "t11n", "i18n" ],
+  "projectUrl": "https://github.com/schotime/Localizy",
+  "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0",
 
   "frameworks": {
     "dnx451": {

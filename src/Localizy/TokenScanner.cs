@@ -12,7 +12,7 @@ namespace Localizy
         public static IEnumerable<StringToken> GetAllTokens(Assembly[] assembly, Func<Type, bool> where)
         {
 #if !DOTNET54
-            assembly = assembly ?? new[] { FindTheCallingAssembly() };
+            assembly = (assembly == null || assembly.Length == 0) ? new[] { FindTheCallingAssembly() } : assembly;
 #endif
             if (assembly == null)
                 return Enumerable.Empty<StringToken>();
@@ -32,15 +32,15 @@ namespace Localizy
         {
             var trace = new StackTrace(false);
 
-            Assembly thisAssembly = typeof(TokenScanner).GetTypeInfo().Assembly;
-            Assembly callingAssembly = null;
-            var stackFrames = trace.GetFrames();
+            var thisAssembly = Assembly.GetExecutingAssembly();
+            var smAssembly = typeof(TokenScanner).Assembly;
 
-            for (int i = 0; i < stackFrames.Length; i++)
+            Assembly callingAssembly = null;
+            for (var i = 0; i < trace.FrameCount; i++)
             {
-                StackFrame frame = stackFrames[i];
-                Assembly assembly = frame.GetMethod().DeclaringType.GetTypeInfo().Assembly;
-                if (assembly != thisAssembly)
+                var frame = trace.GetFrame(i);
+                var assembly = frame.GetMethod().DeclaringType.Assembly;
+                if (assembly != thisAssembly && assembly != smAssembly)
                 {
                     callingAssembly = assembly;
                     break;

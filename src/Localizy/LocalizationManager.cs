@@ -7,7 +7,29 @@ namespace Localizy
 {
     public static class LocalizationManager
     {
-        private static ILocalizationProvider _localizationProvider = Init((Assembly)null);
+        private static ILocalizationProvider _localizationProvider = Init(new Assembly[0]);
+        private static bool initialized = false;
+
+        public static ILocalizationProvider InitSafe(Assembly assembly, params ILocalizationStorageProvider[] localizationStorageProviders)
+        {
+            return InitSafe(new[] { assembly }, localizationStorageProviders);
+        }
+
+        public static ILocalizationProvider InitSafe<T>(params ILocalizationStorageProvider[] localizationStorageProviders)
+        {
+            return InitSafe(new[] { typeof(T).GetTypeInfo().Assembly }, localizationStorageProviders);
+        }
+
+        public static ILocalizationProvider InitSafe(Assembly[] assemblies, params ILocalizationStorageProvider[] localizationStorageProviders)
+        {
+            return InitSafe(assemblies, null, null, localizationStorageProviders);
+        }
+
+        public static ILocalizationProvider InitSafe(Assembly[] assemblies, ILocalizationDataProvider localizationDataProvider, ILocalizationMissingHandler missingHandler, params ILocalizationStorageProvider[] localizationStorageProviders)
+        {
+            _localizationProvider = initialized ? _localizationProvider : Init(assemblies, localizationDataProvider, missingHandler, localizationStorageProviders);
+            return _localizationProvider;
+        }
 
         public static ILocalizationProvider Init(Assembly assembly, params ILocalizationStorageProvider[] localizationStorageProviders)
         {
@@ -27,6 +49,7 @@ namespace Localizy
         public static ILocalizationProvider Init(Assembly[] assemblies, ILocalizationDataProvider localizationDataProvider, ILocalizationMissingHandler missingHandler, params ILocalizationStorageProvider[] localizationStorageProviders)
         {
             _localizationProvider = new LocalizationProvider(assemblies, localizationDataProvider, missingHandler, localizationStorageProviders);
+            initialized = true;
             return _localizationProvider;
         }
 
