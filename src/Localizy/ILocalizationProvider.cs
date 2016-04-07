@@ -15,6 +15,10 @@ namespace Localizy
         string GetText(StringToken token, CultureInfo culture);
         string GetText(StringToken token, object model);
         string GetText(StringToken token, CultureInfo culture, object model);
+        TextAndCulture GetTextWithCulture(StringToken token);
+        TextAndCulture GetTextWithCulture(StringToken token, CultureInfo culture);
+        TextAndCulture GetTextWithCulture(StringToken token, object model);
+        TextAndCulture GetTextWithCulture(StringToken token, CultureInfo culture, object model);
         string TryGetText(LocalizationKey key);
         string TryGetText(LocalizationKey key, CultureInfo culture);
         string TryGetText(LocalizationKey key, object model);

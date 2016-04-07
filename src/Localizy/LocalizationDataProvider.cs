@@ -19,23 +19,28 @@ namespace Localizy
             _missingHandler = missingHandler;
         }
         
-        public string GetText(StringToken token, CultureInfo culture, Func<string> missingFunc = null)
+        public TextAndCulture GetTextWithCulture(StringToken token, CultureInfo culture)
         {
-            return FindTextViaHierarchy(token, culture, missingFunc);
+            return FindTextViaHierarchy(token, culture);
         }
 
-        private string FindTextViaHierarchy(StringToken token, CultureInfo culture, Func<string> missingFunc)
+        private TextAndCulture FindTextViaHierarchy(StringToken token, CultureInfo culture)
         {
             var text = _localeCache[culture].Get(token.ToLocalizationKey(), () =>
             {
                 if (culture.Parent == CultureInfo.InvariantCulture || culture == culture.Parent)
                 {
-                    return missingFunc != null ? missingFunc() : _missingHandler.FindMissingText(token, culture);
+                    return _missingHandler.FindMissingText(token, culture);
                 }
-                return FindTextViaHierarchy(token, culture.Parent, missingFunc);
+                return null;
             });
-            
-            return text;
+
+            if (text == null && (culture.Parent != CultureInfo.InvariantCulture && culture != culture.Parent))
+            {
+                return FindTextViaHierarchy(token, culture.Parent);
+            }
+
+            return new TextAndCulture(text, culture);
         }
 
         public void UpdateText(LocalizationKey key, CultureInfo culture, string value)

@@ -48,5 +48,17 @@ namespace Localizy.Tests
             Assert.Equal("Test1en", text1en);
             Assert.Equal("Test1en-updated", text2en);
         }
+
+        [Fact]
+        public void UpdateTextForASpecificKeyAndCulture_ShouldUpdateTheTranslationForTheCultureSpecified1()
+        {
+            var text1 = _provider.GetText(TestTranslations.TestTop, new CultureInfo("en-US"));
+
+            _provider.UpdateText(new LocalizationKey("TestTranslations.TestTop"), new CultureInfo("en"), "Test1en-updated");
+
+            var text2en = _provider.GetText(TestTranslations.TestTop);
+            
+            Assert.Equal("Test1en-updated", text2en);
+        }
     }
 }

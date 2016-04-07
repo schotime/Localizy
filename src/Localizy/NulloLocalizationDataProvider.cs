@@ -8,7 +8,7 @@ namespace Localizy
 {
     public class NulloLocalizationDataProvider : ILocalizationDataProvider
     {
-        public string GetText(StringToken key, CultureInfo culture = null, Func<string> missingFunc = null)
+        public string GetText(StringToken key, CultureInfo culture = null)
         {
 #if DOTNET54
             culture = culture ?? CultureInfo.CurrentUICulture;
@@ -16,6 +16,11 @@ namespace Localizy
             culture = culture ?? Thread.CurrentThread.CurrentUICulture;
 #endif
             return key.DefaultValue ?? culture.Name + "_" + key.Key;
+        }
+
+        public TextAndCulture GetTextWithCulture(StringToken key, CultureInfo culture)
+        {
+            return new TextAndCulture(GetText(key, culture), culture);
         }
 
         public void UpdateText(LocalizationKey key, CultureInfo culture, string value)

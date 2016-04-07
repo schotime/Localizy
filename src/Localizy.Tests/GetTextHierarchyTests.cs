@@ -45,5 +45,23 @@ namespace Localizy.Tests
 
             Assert.Equal("Test1en-US", stringToken);
         }
+
+        [Fact]
+        public void GetTextWithCultureWithRegionalCultureSpecified_ShouldFallbackAndReturnTextAndParentCultureIfMissing()
+        {
+            var stringToken = _provider.GetTextWithCulture(TestTranslations.General.Test1, new CultureInfo("en-AU"));
+
+            Assert.Equal("Test1en", stringToken.Text);
+            Assert.Equal(new CultureInfo("en"), stringToken.Culture);
+        }
+
+        [Fact]
+        public void GetTextWithCultureWithRegionalCultureSpecified_ShouldTranslateAndReturnTextAndCultureForRegionalCulture()
+        {
+            var stringToken = _provider.GetTextWithCulture(TestTranslations.General.Test1, new CultureInfo("en-US"));
+
+            Assert.Equal("Test1en-US", stringToken.Text);
+            Assert.Equal(new CultureInfo("en-US"), stringToken.Culture);
+        }
     }
 }

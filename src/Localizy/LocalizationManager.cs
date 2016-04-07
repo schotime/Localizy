@@ -58,6 +58,11 @@ namespace Localizy
             return _localizationProvider.GetText(token, culture, model);
         }
 
+        public static TextAndCulture GetTextWithCulture(StringToken token, CultureInfo culture = null, object model = null)
+        {
+            return _localizationProvider.GetTextWithCulture(token, culture, model);
+        }
+
         public static string TryGetText(LocalizationKey key, CultureInfo culture = null, object model = null)
         {
             return _localizationProvider.TryGetText(key, culture, model);

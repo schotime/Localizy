@@ -114,10 +114,30 @@ namespace Localizy
 
         public string GetText(StringToken token, CultureInfo culture, object model)
         {
-            var result = _localizationDataProvider.GetText(token, GetCulture(culture));
+            return GetTextWithCulture(token, culture, model).Text;
+        }
+
+        public TextAndCulture GetTextWithCulture(StringToken token)
+        {
+            return GetTextWithCulture(token, null);
+        }
+
+        public TextAndCulture GetTextWithCulture(StringToken token, CultureInfo culture)
+        {
+            return GetTextWithCulture(token, culture, null);
+        }
+
+        public TextAndCulture GetTextWithCulture(StringToken token, object model)
+        {
+            return GetTextWithCulture(token, null, model);
+        }
+
+        public TextAndCulture GetTextWithCulture(StringToken token, CultureInfo culture, object model)
+        {
+            var result = _localizationDataProvider.GetTextWithCulture(token, GetCulture(culture));
             if (result != null && model != null)
             {
-                result = ObjectFormatter.TokenFormat(result, model);
+                result.Text = ObjectFormatter.TokenFormat(result.Text, model);
             }
             return result;
         }

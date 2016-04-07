@@ -34,7 +34,7 @@ namespace Localizy.Storage
 
         public virtual IEnumerable<LocalString> Provide(CultureInfo culture)
         {
-            var file = _directoryInfo.EnumerateFiles(FileSuffixPattern).FirstOrDefault(x => !string.IsNullOrEmpty(culture.Name) && x.Name.StartsWith(culture.Name));
+            var file = _directoryInfo.EnumerateFiles(FileSuffixPattern).FirstOrDefault(x => !string.IsNullOrEmpty(culture.Name) && x.Name.Split('.').First() == culture.Name);
             if (file == null)
                 return Enumerable.Empty<LocalString>();
 

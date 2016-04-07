@@ -58,7 +58,6 @@ namespace Localizy
             if (text == null)
             {
                 text = missing();
-                Update(key, text);
             }
 
             return text;
