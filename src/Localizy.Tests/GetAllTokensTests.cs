@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using Localizy.Storage;
 using Xunit;
+using System.Reflection;
 
 namespace Localizy.Tests
 {
@@ -32,7 +33,7 @@ namespace Localizy.Tests
 
             _localizationStorageProvider = new InMemoryLocalizationStorageProvider("1", _data);
 
-            _provider = new LocalizationProvider(typeof(TestTranslations).Assembly, _localizationStorageProvider).WithFilter(x => x == typeof(TestTranslations));
+            _provider = new LocalizationProvider(typeof(TestTranslations).GetTypeInfo().Assembly, _localizationStorageProvider).WithFilter(x => x == typeof(TestTranslations));
         }
 
         [Fact]

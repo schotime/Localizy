@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Globalization;
+using System.Reflection;
 using Localizy.Storage;
 using Xunit;
 
@@ -27,7 +28,7 @@ namespace Localizy.Tests
                 }
             });
 
-            _provider = new LocalizationProvider(typeof(TestTranslations).Assembly, storageProvider)
+            _provider = new LocalizationProvider(typeof(TestTranslations).GetTypeInfo().Assembly, storageProvider)
             {
                 CurrentCultureFactory = () => new CultureInfo("en")
             };

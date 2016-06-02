@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System.Reflection;
+using Xunit;
 
 namespace Localizy.Tests
 {
@@ -7,7 +8,7 @@ namespace Localizy.Tests
     {
         public StringTokenStronglyTypedTester()
         {
-            LocalizationManager.Init(typeof(TestTranslations).Assembly);
+            LocalizationManager.Init(typeof(TestTranslations).GetTypeInfo().Assembly);
         }
 
         [Fact]

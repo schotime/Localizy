@@ -2,6 +2,7 @@
 using System.Globalization;
 using Localizy.Storage;
 using Xunit;
+using System.Reflection;
 
 namespace Localizy.Tests
 {
@@ -31,7 +32,7 @@ namespace Localizy.Tests
 
             _localizationStorageProvider = new InMemoryLocalizationStorageProvider("1", _data);
 
-            _provider = new LocalizationProvider(typeof(TestTranslations).Assembly, _localizationStorageProvider)
+            _provider = new LocalizationProvider(typeof(TestTranslations).GetTypeInfo().Assembly, _localizationStorageProvider)
             {
                 CurrentCultureFactory = () => new CultureInfo("en")
             };

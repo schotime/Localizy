@@ -52,7 +52,15 @@ namespace Localizy
 
             return localizationStorageProviders.ToDictionary(x => x.Name, x =>
             {
-                return new Cache<CultureInfo, IDictionary<LocalizationKey, string>>(y => x.Provide(y).ToDictionary(z => new LocalizationKey(z.Key), z => z.Display));
+                return new Cache<CultureInfo, IDictionary<LocalizationKey, string>>(y => 
+                {
+                    var dict = new Dictionary<LocalizationKey, string>();
+                    foreach (var item in x.Provide(y))
+                    {
+                        dict[item.Key] = item.Display;
+                    }
+                    return dict;
+                });
             });
         }
 

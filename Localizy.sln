@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{40ECAAA3-7A8E-4BD4-9C4E-AA1D9F4DE98D}"
 EndProject
@@ -12,6 +12,11 @@ EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Localizy.AspNet5Sample", "src\Localizy.AspNet5Sample\Localizy.AspNet5Sample.xproj", "{ECF39ACF-2B29-4C94-AE52-5B028C8C6BB7}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Localizy.Extensions", "src\Localizy.Extensions\Localizy.Extensions.xproj", "{D7D898FD-71B0-440C-A712-55FA8A9A953E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5B9DFCFA-13B3-47ED-B11A-5836B584CF29}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
