@@ -9,8 +9,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Localizy.Extensions")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyProduct("Localizy.AspNetCore")]
+[assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

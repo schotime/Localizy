@@ -7,8 +7,9 @@
     <PackageId>Localizy</PackageId>
     <PackageTags>localization translation internationalization;l12n;t11n;i18n</PackageTags>
     <PackageProjectUrl>https://github.com/schotime/Localizy</PackageProjectUrl>
-    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageLicenseUrl>https://tldrlegal.com/license/mit-license</PackageLicenseUrl>
     <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.3' ">$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <Authors>Adam Schroder</Authors>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>

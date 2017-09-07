@@ -7,7 +7,7 @@
 Properties {
     $build_dir = Split-Path $psake.build_script_file    
     $build_artifacts_dir = "$build_dir\build"
-    $solution_dir = "$build_dir\src\Localizy"
+    $solution_dir = "$build_dir"
 }
 
 FormatTaskName (("-"*25) + "[{0}]" + ("-"*25))
@@ -15,10 +15,11 @@ FormatTaskName (("-"*25) + "[{0}]" + ("-"*25))
 Task Default -depends Build 
 
 Task Build -depends Clean {
+    Set-Location "$solution_dir"
     Write-Host "Creating BuildArtifacts" -ForegroundColor Green
     Exec { dotnet restore }
-    Set-Location "$solution_dir"
-    Exec { dotnet pack --configuration release --output $build_artifacts_dir } 
+    Exec { dotnet test "$solution_dir\src\Localizy.Tests" }
+    Exec { dotnet pack --configuration Release --output $build_artifacts_dir } 
 }
 
 Task Clean {

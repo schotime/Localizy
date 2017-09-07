@@ -1,7 +1,7 @@
-#Localizy
+# Localizy
 Strongly typed localization. Based on the foundations of Fubu-Localizations but with an easy setup and good feature set.
 
-##Getting Started
+## Getting Started
 
 Defining a translation is done by creating a public static field. The generic paramter type should be the parent class type. 
 
@@ -34,7 +34,7 @@ provider.GetText(L.Default);
 L.Default
 ```
 
-##Localization Sources
+## Localization Sources
 You can define multiple localization sources for the transated values. These need to implement `ILocalizationStorageProvider`.
 
 ```csharp
@@ -62,7 +62,7 @@ The above example is using the default `XmlDirectoryStorageProvider` which loads
 </localizations>
 ```
 
-##Current Culture
+## Current Culture
 The current culture used to resolve the translations is determined (by default) to be the Current Thread Culture but this can be overriden in a couple different ways.
 
 1 - CurrentCultureFactory
