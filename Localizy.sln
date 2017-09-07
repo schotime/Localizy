@@ -1,22 +1,19 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{40ECAAA3-7A8E-4BD4-9C4E-AA1D9F4DE98D}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Localizy", "src\Localizy\Localizy.xproj", "{A4AA41BD-D49A-48DD-B65C-C96A66E1EB36}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Localizy.Tests", "src\Localizy.Tests\Localizy.Tests.xproj", "{0210279C-94B7-46F4-BB7D-F6056329D72E}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Localizy.AspNet5Sample", "src\Localizy.AspNet5Sample\Localizy.AspNet5Sample.xproj", "{ECF39ACF-2B29-4C94-AE52-5B028C8C6BB7}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Localizy.Extensions", "src\Localizy.Extensions\Localizy.Extensions.xproj", "{D7D898FD-71B0-440C-A712-55FA8A9A953E}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5B9DFCFA-13B3-47ED-B11A-5836B584CF29}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Localizy", "src\Localizy\Localizy.csproj", "{A4AA41BD-D49A-48DD-B65C-C96A66E1EB36}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Localizy.Tests", "src\Localizy.Tests\Localizy.Tests.csproj", "{0210279C-94B7-46F4-BB7D-F6056329D72E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Localizy.AspNetCore.Sample", "src\Localizy.AspNetCore.Sample\Localizy.AspNetCore.Sample.csproj", "{ECF39ACF-2B29-4C94-AE52-5B028C8C6BB7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Localizy.AspNetCore", "src\Localizy.AspNetCore\Localizy.AspNetCore.csproj", "{D7D898FD-71B0-440C-A712-55FA8A9A953E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,5 +46,8 @@ Global
 		{0210279C-94B7-46F4-BB7D-F6056329D72E} = {40ECAAA3-7A8E-4BD4-9C4E-AA1D9F4DE98D}
 		{ECF39ACF-2B29-4C94-AE52-5B028C8C6BB7} = {40ECAAA3-7A8E-4BD4-9C4E-AA1D9F4DE98D}
 		{D7D898FD-71B0-440C-A712-55FA8A9A953E} = {40ECAAA3-7A8E-4BD4-9C4E-AA1D9F4DE98D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5B67CA77-567C-48A0-BDC6-B4A389F7446D}
 	EndGlobalSection
 EndGlobal

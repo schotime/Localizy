@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Localizy.Extensions;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
 
 namespace Localizy

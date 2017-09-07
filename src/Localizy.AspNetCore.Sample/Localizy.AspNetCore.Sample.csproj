@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <AssemblyName>Localizy.AspNetCore.Sample</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <PackageId>Localizy.AspNetCore.Sample</PackageId>
+    <UserSecretsId>Localizy.AspNetCore.Sample-c2118a7a-fbd3-436e-b95d-4872d93e7ffd</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="Views\**\*;wwwroot\**\*">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Localizy.AspNetCore\Localizy.AspNetCore.csproj" />
+  </ItemGroup>
+
+</Project>

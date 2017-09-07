@@ -43,7 +43,7 @@ namespace Localizy.Tests
         {
             var storageProvider = _provider.GetStoredLocalizations("1", new CultureInfo("en"));
             Assert.Equal(1, storageProvider.Count);
-            Assert.Equal(true, storageProvider.ContainsKey(new LocalizationKey("TestTranslations.General:Test1")));
+            Assert.True(storageProvider.ContainsKey(new LocalizationKey("TestTranslations.General:Test1")));
         }
     }
 }

@@ -47,7 +47,7 @@ namespace Localizy.Tests
         {
             var stringToken = _provider.GetText(StringToken.FromKeyString("Dynamic.1"), new CultureInfo("de"));
 
-            Assert.Equal(null, stringToken);
+            Assert.Null(stringToken);
         }
     }
 }

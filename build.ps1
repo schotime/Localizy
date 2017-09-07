@@ -18,7 +18,6 @@ Task Build -depends Clean {
     Write-Host "Creating BuildArtifacts" -ForegroundColor Green
     Exec { dotnet restore }
     Set-Location "$solution_dir"
-    #$env:DOTNET_BUILD_VERSION="beta4"
     Exec { dotnet pack --configuration release --output $build_artifacts_dir } 
 }
 

@@ -5,19 +5,22 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Localizy.AspNet5Sample.Localizations;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Localizy.AspNet5Sample
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
         private readonly IHostingEnvironment _env;
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
+            _configuration = configuration;
             _env = env;
         }
 
@@ -34,11 +37,10 @@ namespace Localizy.AspNet5Sample
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
-            loggerFactory.AddConsole();
 
             app.UseMvc(routes =>
             {
@@ -48,17 +50,20 @@ namespace Localizy.AspNet5Sample
             });
         }
 
+        
+    }
+
+    public class Program
+    {
         // Entry point for the application.
         public static void Main(string[] args)
         {
-            var s = new WebHostBuilder()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
-                .UseKestrel()
+            BuildWebHost(args).Run();
+        }
+
+        public static IWebHost BuildWebHost(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .Build();
-
-            s.Run();
-        }
     }
 }
