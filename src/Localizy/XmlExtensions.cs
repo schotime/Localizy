@@ -20,7 +20,7 @@ namespace Localizy
 
         public static XmlDocument FromFile(this XmlDocument document, string fileName)
         {
-            using (var fileStream = new FileStream(fileName, FileMode.Open))
+            using (var fileStream = File.OpenRead(fileName))
             {
                 document.Load(fileStream);
             }
