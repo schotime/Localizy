@@ -10,6 +10,7 @@ namespace Localizy
         IDictionary<LocalizationKey, StringToken> GetAllTokens();
         IDictionary<LocalizationKey, string> GetStoredLocalizations(string name, CultureInfo cultureInfo);
         void Reload(CultureInfo cultureInfo);
+        void Reload(string localizationStorageProviderName);
         void Reload();
         string GetText(StringToken token);
         string GetText(StringToken token, CultureInfo culture);

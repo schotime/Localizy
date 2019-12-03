@@ -83,6 +83,11 @@ namespace Localizy
             _localizationProvider.Reload();
         }
 
+        public static void Reload(string localizationStorageProviderName)
+        {
+            _localizationProvider.Reload(localizationStorageProviderName);
+        }
+
         public static IDictionary<LocalizationKey, StringToken> GetAllTokens()
         {
             return _localizationProvider.GetAllTokens();

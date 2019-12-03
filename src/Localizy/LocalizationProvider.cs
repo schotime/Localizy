@@ -50,17 +50,20 @@ namespace Localizy
             if (localizationStorageProviders.GroupBy(x => x.Name).Count() != localizationStorageProviders.Length)
                 throw new Exception("LocalizationStorageProviders must have unique names");
 
-            return localizationStorageProviders.ToDictionary(x => x.Name, x =>
+            return localizationStorageProviders.ToDictionary(x => x.Name, x => BuildStorageCache(x));
+        }
+
+        private static Cache<CultureInfo, IDictionary<LocalizationKey, string>> BuildStorageCache(ILocalizationStorageProvider localizationStorageProvider)
+        {
+            return new Cache<CultureInfo, IDictionary<LocalizationKey, string>>(y =>
             {
-                return new Cache<CultureInfo, IDictionary<LocalizationKey, string>>(y => 
+                var dict = new Dictionary<LocalizationKey, string>();
+                foreach (var item in localizationStorageProvider.Provide(y))
                 {
-                    var dict = new Dictionary<LocalizationKey, string>();
-                    foreach (var item in x.Provide(y))
-                    {
-                        dict[item.Key] = item.Display;
-                    }
-                    return dict;
-                });
+                    dict[item.Key] = item.Display;
+                }
+
+                return dict;
             });
         }
 
@@ -158,6 +161,15 @@ namespace Localizy
         public void Reload()
         {
             _localizationStorageCache = SetUpLocalizationStoreCache(_localizationStorageProviders);
+            _localizationDataProvider.Reload();
+        }
+
+        public void Reload(string localizationStorageProviderName)
+        {
+            if (!_localizationStorageCache.ContainsKey(localizationStorageProviderName))
+                return;
+
+            _localizationStorageCache[localizationStorageProviderName] = BuildStorageCache(_localizationStorageProviders.Single(x => x.Name == localizationStorageProviderName));
             _localizationDataProvider.Reload();
         }
 
