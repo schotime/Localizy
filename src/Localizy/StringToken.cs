@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Localizy
         private string _key;
         private readonly Lazy<LocalizationKey> _localizationKey;
 
-        private static readonly IList<Type> _latchedTypes = new List<Type>();
+        private static readonly ConcurrentBag<Type> _latchedTypes = new ConcurrentBag<Type>();
         private Type _type;
 
         protected static void fillKeysOnFields(Type tokenType)
