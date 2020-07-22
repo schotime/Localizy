@@ -13,6 +13,7 @@ namespace Localizy
         private readonly string _defaultValue;
         private string _key;
         private readonly Lazy<LocalizationKey> _localizationKey;
+        private static object _lock = new object();
 
         private static readonly ConcurrentBag<Type> _latchedTypes = new ConcurrentBag<Type>();
         private Type _type;
@@ -31,7 +32,6 @@ namespace Localizy
                         token.Key = field.Name;
                     }
                 });
-                
 
             _latchedTypes.Add(tokenType);
         }
@@ -57,16 +57,26 @@ namespace Localizy
         {
             get
             {
-                if (_key.IsEmpty())
-                {
-                    fillKeysOnFields(GetContainerType());
-                }
-
-                ThrowIfKeyNotSet();
-                
+                FillKeysThreadSafe(GetContainerType());
                 return _key;
             }
             protected set { _key = value; }
+        }
+
+        private void FillKeysThreadSafe(Type type)
+        {
+            if (_key == null)
+            {
+                lock (_lock)
+                {
+                    if (_key == null)
+                    {
+                        fillKeysOnFields(type);
+                    }
+                }
+            }
+
+            ThrowIfKeyNotSet();
         }
 
         private void ThrowIfKeyNotSet()
@@ -174,12 +184,8 @@ namespace Localizy
         protected virtual LocalizationKey BuildKey(Type type, string localizationNamespace, bool namespaceByType)
         {
             var localizationNs = localizationNamespace ?? (namespaceByType ? string.Join(".", GetTypeHierarchy(type).Select(x => x.Name)) : null);
-            if (_key == null)
-            {
-                fillKeysOnFields(type);
-            }
-
-            ThrowIfKeyNotSet();
+            
+            FillKeysThreadSafe(type);
 
             return localizationNs.IsNotEmpty()
                 ? new LocalizationKey(_key, localizationNs) 
